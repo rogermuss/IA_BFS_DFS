@@ -1,4 +1,4 @@
-package estructuras_de_datos;
+package estructuras_de_datos.grafo;
 
 public class Node<T> {
     private T item;

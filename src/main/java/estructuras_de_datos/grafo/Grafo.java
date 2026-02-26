@@ -1,4 +1,4 @@
-package estructuras_de_datos;
+package estructuras_de_datos.grafo;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,11 +23,14 @@ public class Grafo {
             throw new IllegalArgumentException("Índices de vértice fuera de rango");
         }
 
-        Arista a1 = new Arista(u, v);
+        Arista a = new Arista(u, v);
         Arista a2 = new Arista(v, u);
-
-        adyacencia.get(u).add(a1);
+        adyacencia.get(u).add(a);
         adyacencia.get(v).add(a2);
+    }
+
+    public boolean eliminarArista(int u, int v){
+        return adyacencia.get(u).removeIf(a -> a.getOrigen() == u && a.getDestino() == v);
     }
 
     public int getNumVertices() {

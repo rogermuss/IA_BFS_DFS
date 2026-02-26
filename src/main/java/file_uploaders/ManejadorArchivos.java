@@ -6,8 +6,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubirGrafo {
-    private static String nombreArchivo = "src/main/java/grafos/grafoPrueba.csv";
+public class ManejadorArchivos {
+    private static String nombreArchivo = "src/main/java/grafos/grafoPrueba.txt";
     public static Grafo cargarGrafoCSV() {
         List<int[]> aristas = new ArrayList<>();
         int maxNodo = -1;
@@ -62,7 +62,7 @@ public class SubirGrafo {
         return grafo;
     }
 
-    public static void agregarArista(Grafo grafo, int origen, int destino) {
+    public static void agregarAristaCSV(Grafo grafo, int origen, int destino) {
         grafo.agregarArista(origen, destino);
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo, true))) {
             bw.write(origen + "," + destino);
@@ -72,13 +72,43 @@ public class SubirGrafo {
         }
     }
 
-    public static void eliminarArista(Grafo grafo, String nombreArchivo, int origen, int destino) {
+    public static void agregarAristaTXT(Grafo grafo, int origen, int destino) {
+        grafo.agregarArista(origen, destino);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo, true))) {
+            bw.write(origen + " " + destino);
+            bw.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void eliminarAristaCSV(Grafo grafo, int origen, int destino) {
         grafo.eliminarArista(origen, destino);
         List<String> lineas = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
             String linea;
             while ((linea = br.readLine()) != null) {
                 if (!linea.equals(origen + "," + destino)) {
+                    lineas.add(linea);
+                }
+            }
+        } catch (IOException e) { e.printStackTrace(); }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo))) {
+            for (String linea : lineas) {
+                bw.write(linea);
+                bw.newLine();
+            }
+        } catch (IOException e) { e.printStackTrace(); }
+    }
+
+    public static void eliminarAristaTXT(Grafo grafo, int origen, int destino) {
+        grafo.eliminarArista(origen, destino);
+        List<String> lineas = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                if (!linea.equals(origen + " " + destino)) {
                     lineas.add(linea);
                 }
             }
